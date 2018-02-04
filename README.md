@@ -1,4 +1,4 @@
-# Flems 
+# Flems
 
 > As seen on [Flems.io](https://flems.io)
 
@@ -35,13 +35,13 @@ Flems(document.body, {
 
 ## Contents
 
-Content is added to the `files` and `links` arrays in options. 
+Content is added to the `files` and `links` arrays in options.
 
 ## `.files`
 The files array should contains objects with the following structure
 ```js
 {
-    name        : String, 
+    name        : String,
     compiler    : String | Function,
     content     : String
 }
@@ -103,6 +103,8 @@ Flems is customizable to fit your need. If you don't want the toolbar or don't c
 }
 ```
 
+If you have a Flems.io link, you can just pass that raw, and it'll get mixed in with all the options.
+
 ## Methods
 
 There are a few methods exposed to control the Flems runtime:
@@ -141,4 +143,3 @@ To allow you to use Flems with only a single file to be required the javascript 
 ## Thanks
 
 The [mithril community](https://gitter.im/mithriljs/mithril.js) has been an amazing help and source for feedback - Thanks to all of you!
-

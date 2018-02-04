@@ -1,9 +1,6 @@
 import lz from 'lz-string'
 
 export function endsWith(suffix, str) {
-  if (arguments.length === 1)
-    return str => endsWith(suffix, str)
-
   return str.indexOf(suffix, str.length - suffix.length) > -1
 }
 
@@ -15,34 +12,50 @@ export function assign(obj, obj2) {
   return obj
 }
 
-export const createFlemsIoLink = state => {
+export function readFlemsIoLink(link) {
+  if (link == null) return null
+  // Strip the 'https://flems.io/#0=' prefix
+  if (link.slice(0, 18) === 'https://flems.io/#') link = link.slice(18)
+  const index = link.indexOf("=")
+  if (index < 0) return null
+
+  const type = parseInt(link.slice(0, index), 10)
+  const compressed = link.slice(index + 1)
+
+  if (type === 0) {
+    return JSON.parse(lz.decompressFromEncodedURIComponent(compressed))
+  } else {
+    return null
+  }
+}
+
+export function createFlemsIoLink(state) {
   return 'https://flems.io/#0=' + lz.compressToEncodedURIComponent(
     JSON.stringify(state)
   )
 }
 
 export function find(fn, array) {
-  let match = null
-  array.some(item => {
-    match = fn(item)
-    return match
-  })
-  return match
+  for (let i = 0, match; i < array.length; i++) {
+    if (match = fn(array[i])) return match
+  }
+  return undefined
 }
 
 export const memoize = (fn, cache = {}) => item =>
-  item in cache
-    ? cache[item]
-    : cache[item] = fn(item)
+  cache[item] || (cache[item] = fn(item))
 
-export const ext = f => f.lastIndexOf('.') > -1 && f.slice(f.lastIndexOf('.') + 1)
+export const ext = f => {
+  const index = f.lastIndexOf('.') + 1
+  return index ? f.slice(index) : undefined
+}
 
-export const isJs = endsWith('.js')
-export const isTs = endsWith('.ts')
-export const isLs = endsWith('.ls')
-export const isCoffee = endsWith('.coffee')
-export const isCss = endsWith('.css')
-export const isHtml = endsWith('.html')
+export const isJs = f => endsWith('.js', f)
+export const isTs = f => endsWith('.ts', f)
+export const isLs = f => endsWith('.ls', f)
+export const isCoffee = f => endsWith('.coffee', f)
+export const isCss = f => endsWith('.css', f)
+export const isHtml = f => endsWith('.html', f)
 export const isScript = f => isJs(f) || isTs(f) || isLs(f) || isCoffee(f)
 
 export const urlRegex = /^https?:\/\//

@@ -9,8 +9,8 @@ import message from './message'
 
 let resizeRegistrered = false
 window.m = m // wright hmr
-function Flems(dom, state = {}, runtimeUrl) {
-  const model = Model(dom, state, runtimeUrl)
+function Flems(dom, state = {}, runtimeUrl, flemsURL) {
+  const model = Model(dom, state, runtimeUrl, flemsURL)
       , actions = Actions(model)
 
   if (!resizeRegistrered) {
@@ -36,4 +36,3 @@ Flems.defaults = defaults
 Flems.version = process.env.FLEMS_VERSION // eslint-disable-line
 
 export default Flems
-

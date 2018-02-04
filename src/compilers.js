@@ -54,7 +54,7 @@ const compilers = {
   }),
   coffee: file => Promise.all([
     load('https://unpkg.com/@babel/standalone/babel.min.js'),
-    load('http://coffeescript.org/v2/browser-compiler/coffeescript.js'),
+    load('https://cdn.rawgit.com/jashkenas/coffeescript/794f65fb/docs/v2/browser-compiler/coffeescript.js'),
   ]).then(() => {
     const coffee = window.CoffeeScript.compile(file.content, {
       sourceMap: true,

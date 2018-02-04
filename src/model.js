@@ -1,4 +1,4 @@
-import { endsWith, urlRegex, filenameRegex } from './utils'
+import { endsWith, urlRegex, filenameRegex, readFlemsIoLink } from './utils'
 import compilers from './compilers'
 import stream from 'mithril/stream'
 import b from 'bss'
@@ -40,7 +40,15 @@ const defaults = () => ({
 
 export { defaults }
 
-export default function(dom, state, runtimeUrl) {
+export default function(dom, state, runtimeUrl, flemsURL) {
+  const url = readFlemsIoLink(flemsURL)
+
+  if (url) {
+    Object.keys(url).forEach(key => {
+      state[key] = url[key]
+    })
+  }
+
   state = validateAndCleanState(state)
 
   const id = randomId()
