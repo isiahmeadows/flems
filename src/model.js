@@ -41,6 +41,8 @@ const defaults = () => ({
 export { defaults }
 
 export default function(dom, state, runtimeUrl, flemsURL) {
+  state = validateAndCleanState(state)
+
   const url = readFlemsIoLink(flemsURL)
 
   if (url) {
@@ -48,8 +50,6 @@ export default function(dom, state, runtimeUrl, flemsURL) {
       state[key] = url[key]
     })
   }
-
-  state = validateAndCleanState(state)
 
   const id = randomId()
       , selected = stream(state.selected)

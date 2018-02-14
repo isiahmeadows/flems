@@ -1,5 +1,7 @@
 import lz from 'lz-string'
 
+import { readLinkV1 } from "./link-v1"
+
 export function endsWith(suffix, str) {
   return str.indexOf(suffix, str.length - suffix.length) > -1
 }
@@ -14,7 +16,7 @@ export function assign(obj, obj2) {
 
 export function readFlemsIoLink(link) {
   if (link == null) return null
-  // Strip the 'https://flems.io/#0=' prefix
+  // Strip the 'https://flems.io/#' prefix
   if (link.slice(0, 18) === 'https://flems.io/#') link = link.slice(18)
   const index = link.indexOf("=")
   if (index < 0) return null
@@ -22,9 +24,17 @@ export function readFlemsIoLink(link) {
   const type = parseInt(link.slice(0, index), 10)
   const compressed = link.slice(index + 1)
 
-  if (type === 0) {
-    return JSON.parse(lz.decompressFromEncodedURIComponent(compressed))
-  } else {
+  // Let's tolerate errors in the URL.
+  try {
+    if (type === 0) {
+      return JSON.parse(lz.decompressFromEncodedURIComponent(compressed))
+    } else if (type === 1) {
+      return readLinkV1(compressed)
+    } else {
+      return null
+    }
+  } catch (_) {
+    // Maybe, alert user that the hash couldn't be read or something?
     return null
   }
 }

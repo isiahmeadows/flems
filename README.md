@@ -81,6 +81,8 @@ The links array should contain objects with the following structure
 ```
 If the url supports CORS, Flems will open files shorther than 200.000 chars in the editor, if not they'll simply be linked to.
 
+If you have a Flems.io link, you can just pass that as the fourth argument, and it'll set up the selected tab, the various things open, along with everything else internally. This is mixed in *after* the various options, but it ignores whatever options are part of general layout.
+
 ## Options
 
 Flems is customizable to fit your need. If you don't want the toolbar or don't care for console output you can easily hide that away. The following options with their defaults are available:
@@ -102,8 +104,6 @@ Flems is customizable to fit your need. If you don't want the toolbar or don't c
     autoHeight    : false
 }
 ```
-
-If you have a Flems.io link, you can just pass that raw, and it'll get mixed in with all the options.
 
 ## Methods
 
