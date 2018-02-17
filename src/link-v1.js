@@ -101,7 +101,7 @@ function computeChecksum(str, index) {
 }
 
 const f64 = new Float64Array(1)
-const i16 = new Uint16Array(f64.buffer)
+const i8 = new Uint8Array(f64.buffer)
 
 const BASE64_VALUE_TABLE = new Uint8Array([
   // 0x0n
@@ -179,12 +179,9 @@ export function readLinkV1(link) {
   }
 
   function readDouble() {
-    if (index + 6 < link.length) return fail()
-    const chars = atob(link.slice(index, index + 6) + "==")
-    i16[0] = chars.charCodeAt(0)
-    i16[1] = chars.charCodeAt(1)
-    i16[2] = chars.charCodeAt(2)
-    i16[3] = chars.charCodeAt(3)
+    if (index + 11 < link.length) return fail()
+    const chars = atob(link.slice(index, index += 11) + "=")
+    for (let i = 0; i < 8; i++) i8[i] = chars.charCodeAt(i)
     return f64[0]
   }
 
@@ -259,7 +256,7 @@ export function writeLinkV1(state) {
       write64(value >>> 30 | 1)
       value <<= 2
     } else {
-      // Chop off leading zeroes to remove redundant.
+      // Chop off leading zeroes to remove redundant bytes.
       while ((value & 0xf8000000) === 0) value <<= 5
     }
     let prev = value >>> 26 // 32 - 5 - 1
@@ -284,12 +281,7 @@ export function writeLinkV1(state) {
 
   function writeDouble(value) {
     f64[0] = value
-    link += btoa(
-      String.fromCharCode(i16[0]) +
-      String.fromCharCode(i16[1]) +
-      String.fromCharCode(i16[2]) +
-      String.fromCharCode(i16[3])
-    ).slice(0, -2)
+    link += btoa(String.fromCharCode.apply(null, i8)).slice(0, -1)
   }
 
   write64(ref,
