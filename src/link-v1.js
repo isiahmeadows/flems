@@ -70,6 +70,7 @@ const TYPE_TABLE = [
 const COMPILER_TABLE = [
   null,
   null,
+  null,
   'ts',
   'babel',
   'ls',
