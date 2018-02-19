@@ -197,17 +197,17 @@ export function readLinkV1(link) {
   const autoReload = (flags & 2) !== 0
   const middle = readDouble()
   const selected = readInt()
-  const files = rangeMap(() => ({
+  const files = readList(() => ({
     compiler: read64(),
     name: readInt(),
     content: readInt()
   }))
-  const links = rangeMap(() => ({
+  const links = readList(() => ({
     type: read64(),
     name: readInt(),
     url: readInt(),
-    patches: rangeMap(() => [
-      rangeMap(() => [readInt(), readInt()]),
+    patches: readList(() => [
+      readList(() => [readInt(), readInt()]),
       [
         readInt(), // length1
         readInt(), // length2
@@ -285,7 +285,7 @@ export function writeLinkV1(state) {
     link += btoa(String.fromCharCode.apply(null, i8)).slice(0, -1)
   }
 
-  write64(ref,
+  write64(
     ((state.console === true) << 0) |
     (!!state.autoReload << 1)
   )
