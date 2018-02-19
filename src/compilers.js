@@ -2,7 +2,7 @@ import inspect from 'object-inspect'
 
 const cache = {}
 const load = url =>
-  cache[item] || (cache[item] = new Promise((resolve, reject) => {
+  cache[url] || (cache[url] = new Promise((resolve, reject) => {
     const el = document.createElement('script')
     el.async = false
     el.charset = 'utf-8'
