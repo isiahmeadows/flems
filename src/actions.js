@@ -14,7 +14,11 @@ export default function(model) {
   const actions = {
     onchange      : () => { /* no-op */ },
     setMiddle     : size => model.state.middle = size,
-    toggleConsole : change(hide => model.state.console = !model.state.console),
+    toggleConsole : change(hide => {
+      if (model.state.console !== false) {
+        model.state.console = model.state.console === true ? 'collapsed' : true
+      }
+    }),
     resetSize     : change(() => actions.setMiddle(50)),
     loaded        : () => model.loading = false,
     toggleAutoReload,

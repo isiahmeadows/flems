@@ -52,9 +52,6 @@ export function find(fn, array) {
   return undefined
 }
 
-export const memoize = (fn, cache = {}) => item =>
-  cache[item] || (cache[item] = fn(item))
-
 export const ext = f => {
   const index = f.lastIndexOf('.') + 1
   return index ? f.slice(index) : undefined

@@ -47,7 +47,9 @@ export default function(dom, state, runtimeUrl, flemsURL) {
 
   if (url) {
     Object.keys(url).forEach(key => {
-      state[key] = url[key]
+      if (key !== "console" || state.console !== false) {
+        state[key] = url[key]
+      }
     })
   }
 

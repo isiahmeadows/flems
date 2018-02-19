@@ -18,7 +18,7 @@ export default (model, actions) =>
       .fd('column')
       .background('rgb(246,246,246)')
   , {
-    style: b.maxHeight(model.state.console && '50%').style
+    style: b.maxHeight(model.state.console === true && '50%').style
   },
     m('div'
       + b.d('flex').c('#777').flexShrink(0)
@@ -36,7 +36,7 @@ export default (model, actions) =>
         icon({
           size: 32,
           style:
-            b.transform(model.state.console && 'rotate(180deg)').style,
+            b.transform(model.state.console === true && 'rotate(180deg)').style,
           class: b
             .p(8)
             .background('inherit')
@@ -44,7 +44,9 @@ export default (model, actions) =>
             .transition('max-height 0.3s')
             .class
         }, arrowIcon),
-        tooltip({title: model.state.console ? 'Hide console' : 'Show console'})
+        tooltip({
+          title: model.state.console === true ? 'Hide console' : 'Show console'
+        })
       )
     ),
     m('.scroll'

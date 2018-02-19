@@ -1,8 +1,8 @@
 import inspect from 'object-inspect'
-import { memoize } from './utils'
 
-const load = memoize(url =>
-  new Promise((resolve, reject) => {
+const cache = {}
+const load = url =>
+  cache[item] || (cache[item] = new Promise((resolve, reject) => {
     const el = document.createElement('script')
     el.async = false
     el.charset = 'utf-8'
@@ -12,8 +12,7 @@ const load = memoize(url =>
     el.onerror = err => {
       reject('Could not load compiler from ' + url + '\n\n' + inspect(err))
     }
-  })
-)
+  }))
 
 const compilers = {
   ts: file => load('https://unpkg.com/typescript@2.4.2/lib/typescriptServices.js').then(() => {

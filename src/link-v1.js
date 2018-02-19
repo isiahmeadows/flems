@@ -7,7 +7,7 @@ import lz from 'lz-string'
 //     pasting long URLs, it's not uncommon for bytes to get added, truncated,
 //     or whatever).
 //
-// - `console` | `autoReload`
+// - `console` (`true`/`collapsed`) | `autoReload`
 // - `middle` as a double in its bit representation
 // - `selected` as a string
 //
@@ -193,15 +193,15 @@ export function readLinkV1(link) {
   }
 
   const flags = read64()
-  const console = (flags & 1) !== 0,
-  const autoReload = (flags & 2) !== 0,
-  const middle = readDouble(),
-  const selected = readInt(),
+  const console = (flags & 1) !== 0
+  const autoReload = (flags & 2) !== 0
+  const middle = readDouble()
+  const selected = readInt()
   const files = rangeMap(() => ({
     compiler: read64(),
     name: readInt(),
     content: readInt()
-  })),
+  }))
   const links = rangeMap(() => ({
     type: read64(),
     name: readInt(),
@@ -286,8 +286,8 @@ export function writeLinkV1(state) {
   }
 
   write64(ref,
-    ((state.console ? 1 : 0) << 0) |
-    ((state.autoReload ? 1 : 0) << 1)
+    ((state.console === true) << 0) |
+    (!!state.autoReload << 1)
   )
   writeDouble(state.middle)
   writeString(state.selected)

@@ -72,5 +72,5 @@ export default (model, actions) =>
         runtime(model, actions)
       )
     ),
-    model.state.console && console(model, actions)
+    model.state.console !== false && console(model, actions)
   )
